@@ -1,5 +1,4 @@
 ﻿using Promact.CustomerSuccess.Platform.Entities;
-using Promact.CustomerSuccess.Platform.Services.Dtos;
 using Promact.CustomerSuccess.Platform.Services.Emailing;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -10,14 +9,12 @@ namespace Promact.CustomerSuccess.Platform.Services.ApprovedTeams
     public class ApprovedTeamService : CrudAppService<ApprovedTeam, ApprovedTeamDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateApprovedTeamDto, CreateUpdateApprovedTeamDto>
     {
         private readonly IEmailService _emailService;
-        private readonly string Useremail;
         private readonly IRepository<ApprovedTeam, Guid> _approvedTeamRepository;
 
         public ApprovedTeamService(IRepository<ApprovedTeam, Guid> repository, IEmailService emailService) : base(repository)
         {
             _emailService = emailService;
             _approvedTeamRepository = repository;
-            Useremail = Template.Useremail;
         }
 
         public override async Task<ApprovedTeamDto> CreateAsync(CreateUpdateApprovedTeamDto input)

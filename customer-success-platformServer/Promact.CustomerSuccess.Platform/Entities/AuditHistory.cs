@@ -8,7 +8,10 @@ namespace Promact.CustomerSuccess.Platform.Entities
     {
 
         public DateTime DateOfAudit { get; set; }
+        [ForeignKey("User")]
         public Guid ReviewedBy { get; set; }
+        
+        public virtual User? User { get; set; }
         public SprintStatus Status { get; set; }    
         public string ReviewedSection { get; set; }
         public string? CommentOrQueries { get; set; }

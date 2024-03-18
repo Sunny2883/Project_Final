@@ -30,14 +30,18 @@ namespace Promact.CustomerSuccess.Platform.Services.Users
             _mapper = mapper;
         }
 
-        public async Task<UserDto> GetUserByUsernameAndEmailAsync(string username, string email)
+        public async Task<Response> GetUserByUsernameAndEmailAsync(string username, string email)
         {
-            var user = await _userRepository.FirstOrDefaultAsync(u => u.UserName == username && u.Email == email);
+            var user = await _userRepository.FirstOrDefaultAsync(u => u.UserName == username && u.Email == email );
 
             if (user == null)
             {
-                // Handle if user not found
-                return null;
+                // User does not exist
+                return new Response { message = "User not exist", User = null };
+            }
+            if (!user.active)
+            {
+                return new Response { message = "You are not verified user", User = null,IsSuccess=2 };
             }
 
             var userDto = _mapper.Map<User, UserDto>(user);
@@ -54,7 +58,8 @@ namespace Promact.CustomerSuccess.Platform.Services.Users
                 userDto.Role = _mapper.Map<Role, RoleDto>(role);
             }
 
-            return userDto;
+            // User exists
+            return new Response { message = "You have successfully login", User = userDto ,IsSuccess=1};
         }
 
         public async Task<UserDto> GetDetailByEmailAsync(string email)
@@ -63,31 +68,85 @@ namespace Promact.CustomerSuccess.Platform.Services.Users
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
-        public async Task<List<UserDto>> GetManagersAsync()
+        public async Task<List<UserDto>> GetUsersByRoleAsync(string roleName)
         {
-            // Fetch the manager role
-            var managerRole = await _roleRepository.FirstOrDefaultAsync(r => r.Name == "Manager");
-
-            if (managerRole == null)
+            if (string.IsNullOrEmpty(roleName))
             {
-                // Handle if manager role not found
+                // Handle if roleName is null or empty
                 return null;
             }
 
-            // Fetch users with manager role
-            var managerUserRoles = await _userRoleRepository.GetListAsync(ur => ur.RoleId == managerRole.Id);
-            var managerUserIds = managerUserRoles.Select(ur => ur.UserId);
+            // Fetch the role
+            var role = await _roleRepository.FirstOrDefaultAsync(r => r.Name.ToLower() == roleName.ToLower());
 
-            // Fetch manager users
-            var managerUsers = await _userRepository.GetListAsync(u => managerUserIds.Contains(u.Id));
+            if (role == null)
+            {
+                // Handle if role not found
+                return null;
+            }
 
-            // Map manager users to UserDto
-            var managerUserDtos = managerUsers.Select(user => _mapper.Map<User, UserDto>(user)).ToList();
+            // Fetch users with the specified role
+            var userRoles = await _userRoleRepository.GetListAsync(ur => ur.RoleId == role.Id);
+            var userIds = userRoles.Select(ur => ur.UserId);
 
-            // You may also want to include additional information such as manager's role, etc.
+            // Fetch users
+            var users = await _userRepository.GetListAsync(u => userIds.Contains(u.Id));
 
-            return managerUserDtos;
+            // Map users to UserDto
+            var userDtos = users.Select(user => _mapper.Map<User, UserDto>(user)).ToList();
+
+            return userDtos;
         }
 
+        public override async Task<PagedResultDto<UserDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        {
+            var users = await base.Repository.ToListAsync();
+
+            var userDtos = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                var userDto = _mapper.Map<User, UserDto>(user);
+
+                // Fetch the UserRole
+                var userRole = await _userRoleRepository.FirstOrDefaultAsync(ur => ur.UserId == user.Id);
+
+                if (userRole != null)
+                {
+                    // Fetch the associated Role
+                    var role = await _roleRepository.GetAsync(userRole.RoleId);
+
+                    // Map RoleDto
+                    userDto.Role = _mapper.Map<Role, RoleDto>(role);
+                }
+
+                userDtos.Add(userDto);
+            }
+
+            return new PagedResultDto<UserDto>(userDtos.Count, userDtos);
+        }
+
+        public async Task<bool> ToggleUserAccountStatus(Guid userId, bool isActive)
+        {
+            var user = await _userRepository.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user != null)
+            {
+                user.active = isActive;
+                await _userRepository.UpdateAsync(user,true);
+                
+                return true; // Account status updated successfully
+            }
+
+            return false; // User not found
+        }
+
+
+    }
+    public class Response
+    {
+        public string message { get; set; }
+        public UserDto User { get; set; }
+        public int? IsSuccess { get; set; }  = 0;
     }
 }

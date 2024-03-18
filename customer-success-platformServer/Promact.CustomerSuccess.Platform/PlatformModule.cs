@@ -52,6 +52,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
+using Volo.Abp.Data;
 
 namespace Promact.CustomerSuccess.Platform;
 
@@ -160,6 +161,7 @@ namespace Promact.CustomerSuccess.Platform;
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+      
 
         if (hostingEnvironment.IsDevelopment())
         {
@@ -421,6 +423,8 @@ namespace Promact.CustomerSuccess.Platform;
                 configurationContext.UseNpgsql();
             });
         });
+
+        context.Services.AddTransient<IDataSeedContributor, CustomerSuccessDataSeedContributor>();
 
     }
 

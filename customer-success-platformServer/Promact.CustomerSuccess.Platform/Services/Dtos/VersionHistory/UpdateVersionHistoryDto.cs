@@ -12,7 +12,7 @@ namespace Promact.CustomerSuccess.Platform.Services.Dtos.VersionHistory
         public Guid CreatedBy { get; set; }
         public DateTime RevisionDate { get; set; }
         public DateTime? ApprovalDate { get; set; }
-        public Guid ApprovedBy { get; set; }
+        public string ApprovedBy { get; set; }
 
         public Guid ProjectId { get; set; }
     }

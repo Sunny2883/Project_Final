@@ -27,9 +27,7 @@ public class PlatformDbContext : AbpDbContext<PlatformDbContext>
     public DbSet<VersionHistory> VersionHistories    { get; set; }
     public DbSet<AuditHistory> AuditHistories    { get; set; }
     public DbSet<Project> Projects { get; set; }
-    public DbSet<Document> Documents { get; set; }
-    public DbSet<DocumentVersion> DocumentVersions { get; set; }
-    public DbSet<Organization> Organizations { get; set; }
+
     public DbSet<ClientFeedback> ClientFeedbacks { get; set; }
     public DbSet<ProjectBudget> ProjectBudgets { get; set; }
    
@@ -75,10 +73,7 @@ public class PlatformDbContext : AbpDbContext<PlatformDbContext>
         {
             auditHistory.ConfigureByConvention();
         });
-        builder.Entity<DocumentVersion>(entity =>
-        {                        
-            entity.ConfigureByConvention();
-        });
+ 
         builder.Entity<EscalationMatrix>(EscalationMatrix =>
         {            
             EscalationMatrix.ConfigureByConvention();
@@ -87,10 +82,7 @@ public class PlatformDbContext : AbpDbContext<PlatformDbContext>
         {            
             MeetingMinute.ConfigureByConvention();
         });
-        builder.Entity<Organization>(Organization =>
-        {
-            Organization.ConfigureByConvention();
-        });
+  
         builder.Entity<Project>(Project =>
         {
             Project.ConfigureByConvention();
@@ -119,10 +111,7 @@ public class PlatformDbContext : AbpDbContext<PlatformDbContext>
         {
             ClientFeedback.ConfigureByConvention();
         });
-        builder.Entity<Document>(Document =>
-        {
-            Document.ConfigureByConvention();
-        });
+   
         builder.Entity<User>(ApplicationUser =>
         {
             ApplicationUser.ConfigureByConvention();

@@ -3,7 +3,7 @@ WORKDIR /App
 
 # Copy everything
 COPY . ./
-RUN dotnet tool install -g Volo.Abp.Cli
+
 # Restore as distinct layers
 RUN dotnet restore
 # Build and publish a release

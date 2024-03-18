@@ -8,6 +8,6 @@ namespace Promact.CustomerSuccess.Platform.Services.Dtos.Project
         [StringLength(128)]
         public required string Name { get; set; }
         public required string Description { get; set; }
-        public Guid UserId { get; set; }
+        public Guid ManagerId { get; set; }
     }
 }
