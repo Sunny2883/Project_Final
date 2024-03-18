@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/backend-task-family:24",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/backend-task-family:28",
     "containerDefinitions": [
         {
             "name": "dotnet_app",
@@ -22,7 +22,7 @@
     ],
     "family": "backend-task-family",
     "networkMode": "bridge",
-    "revision": 24,
+    "revision": 28,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -35,7 +35,7 @@
         "EXTERNAL",
         "EC2"
     ],
-    "registeredAt": "2024-03-18T05:48:50.801Z",
+    "registeredAt": "2024-03-18T07:28:09.840Z",
     "registeredBy": "arn:aws:iam::730335487196:user/Git_hub_Actions",
     "tags": []
 }

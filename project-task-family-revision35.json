@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/project-task-family:35",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/project-task-family:59",
     "containerDefinitions": [
         {
             "name": "project_task_definition",
@@ -25,7 +25,7 @@
     "taskRoleArn": "arn:aws:iam::730335487196:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::730335487196:role/ecsTaskExecutionRole",
     "networkMode": "bridge",
-    "revision": 35,
+    "revision": 59,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -52,7 +52,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-03-16T12:25:16.631Z",
-    "registeredBy": "arn:aws:iam::730335487196:root",
+    "registeredAt": "2024-03-18T07:17:52.119Z",
+    "registeredBy": "arn:aws:iam::730335487196:user/Git_hub_Actions",
     "tags": []
 }
