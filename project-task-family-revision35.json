@@ -1,17 +1,16 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/project-task-family:59",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/project-task-family:69",
     "containerDefinitions": [
         {
-            "name": "project_task_definition",
+            "name": "backend_ecs_service_dev",
             "image": "730335487196.dkr.ecr.ap-south-1.amazonaws.com/project_repo:latest",
-            "cpu": 0,
+            "cpu": 1000,
+            "memory": 1000,
             "portMappings": [
                 {
-                    "name": "project_task_definition-4200-tcp",
                     "containerPort": 4200,
-                    "hostPort": 4200,
-                    "protocol": "tcp",
-                    "appProtocol": "http"
+                    "hostPort": 0,
+                    "protocol": "tcp"
                 }
             ],
             "essential": true,
@@ -22,37 +21,21 @@
         }
     ],
     "family": "project-task-family",
-    "taskRoleArn": "arn:aws:iam::730335487196:role/ecsTaskExecutionRole",
-    "executionRoleArn": "arn:aws:iam::730335487196:role/ecsTaskExecutionRole",
     "networkMode": "bridge",
-    "revision": 59,
+    "revision": 69,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
         {
             "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
         }
     ],
     "placementConstraints": [],
     "compatibilities": [
+        "EXTERNAL",
         "EC2"
     ],
-    "requiresCompatibilities": [
-        "EC2"
-    ],
-    "cpu": "1000",
-    "memory": "1000",
-    "runtimePlatform": {
-        "cpuArchitecture": "X86_64",
-        "operatingSystemFamily": "LINUX"
-    },
-    "registeredAt": "2024-03-18T07:17:52.119Z",
+    "registeredAt": "2024-03-18T13:00:23.757Z",
     "registeredBy": "arn:aws:iam::730335487196:user/Git_hub_Actions",
     "tags": []
 }
