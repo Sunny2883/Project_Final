@@ -28,7 +28,7 @@ namespace Promact.CustomerSuccess.Platform.Services.Emailing
                 {
                     var emailDto = new EmailDto
                     {
-                        To = stakeholder.Email,
+                        To = stakeholder.Contact,
                         Subject = request.Subject,
                         Body = Template.GetEmailTemplate(stakeholder.Name)
                     };

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Promact.CustomerSuccess.Platform.Entities;
+using Promact.CustomerSuccess.Platform.Services.Dtos;
 using Promact.CustomerSuccess.Platform.Services.Dtos.ApprovedTeam;
 using Promact.CustomerSuccess.Platform.Services.Dtos.AuditHistory;
 using Promact.CustomerSuccess.Platform.Services.Dtos.Auth;
