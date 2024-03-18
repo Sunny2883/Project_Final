@@ -46,8 +46,8 @@
     "requiresCompatibilities": [
         "EC2"
     ],
-    "cpu": "307",
-    "memory": "307",
+    "cpu": "1000",
+    "memory": "1000",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
