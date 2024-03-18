@@ -1,0 +1,41 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/backend-task-family:24",
+    "containerDefinitions": [
+        {
+            "name": "dotnet_app",
+            "image": "730335487196.dkr.ecr.ap-south-1.amazonaws.com/project_repo_dotnet:latest",
+            "cpu": 300,
+            "memory": 300,
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "systemControls": []
+        }
+    ],
+    "family": "backend-task-family",
+    "networkMode": "bridge",
+    "revision": 24,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EXTERNAL",
+        "EC2"
+    ],
+    "registeredAt": "2024-03-18T05:48:50.801Z",
+    "registeredBy": "arn:aws:iam::730335487196:user/Git_hub_Actions",
+    "tags": []
+}

@@ -1,1 +1,101 @@
+name: Development
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches: ["master"]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY_1: project_repo
+  ECR_REPOSITORY_2: project_repo_dotnet
+  ECS_SERVICE_1: ecs-service
+  ECS_SERVICE_2: backend_ecs_service
+  ECS_CLUSTER: project_cluster
+  ECS_TASK_DEFINITION_1: project-task-family-revision35.json
+  ECS_TASK_DEFINITION_2: backend-task-family-revision24.json
+  CONTAINER_NAME_1: project_task_definition
+  CONTAINER_NAME_2: dotnet_app
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR 1
+        id: login-ecr-1
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+
+      - name: Build, tag, and push image to Amazon ECR 1
+        id: build-image-1
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-1.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          cd customer-success-platformServer
+          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_1 }}:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_1 }}:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/${{ env.ECR_REPOSITORY_1 }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition 1
+        id: task-def-1
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION_1 }}
+          container-name: ${{ env.CONTAINER_NAME_1 }}
+          image: ${{ steps.build-image-1.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition 1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+        with:
+          task-definition: ${{ steps.task-def-1.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE_1 }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      - name: Login to Amazon ECR 2
+        id: login-ecr-2
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+
+      - name: Build, tag, and push image to Amazon ECR 2
+        id: build-image-2
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-2.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          cd CustomerSuccessPlatformClient
+          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_2 }}:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_2 }}:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/${{ env.ECR_REPOSITORY_2 }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition 2
+        id: task-def-2
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION_2 }}
+          container-name: ${{ env.CONTAINER_NAME_2 }}
+          image: ${{ steps.build-image-2.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition 2
+        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+        with:
+          task-definition: ${{ steps.task-def-2.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE_2 }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
 
