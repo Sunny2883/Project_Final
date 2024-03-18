@@ -12,7 +12,7 @@ env:
   AWS_REGION: ap-south-1
   ECR_REPOSITORY_1: project_repo
   ECR_REPOSITORY_2: project_repo_dotnet
-  ECS_SERVICE_1: ecs-service
+  ECS_SERVICE_1: ecs_service
   ECS_SERVICE_2: backend_ecs_service
   ECS_CLUSTER: project_cluster
   ECS_TASK_DEFINITION_1: project-task-family-revision35.json
