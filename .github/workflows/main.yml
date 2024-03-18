@@ -3,22 +3,22 @@ name: Development
 on:
   push:
     branches:
-      - "master"
+      - "staging"
   pull_request:
-    branches: ["master"]
+    branches: ["staging"]
   workflow_dispatch:
 
 env:
   AWS_REGION: ap-south-1
   ECR_REPOSITORY_1: project_repo
   ECR_REPOSITORY_2: project_repo_dotnet
-  ECS_SERVICE_1: ecs_service
-  ECS_SERVICE_2: backend_ecs_service
-  ECS_CLUSTER: project_cluster
+  ECS_SERVICE_1: ecs_service_staging
+  ECS_SERVICE_2: backend_ecs_service_staging
+  ECS_CLUSTER: project_cluster_staging
   ECS_TASK_DEFINITION_1: project-task-family-revision35.json
   ECS_TASK_DEFINITION_2: backend-task-family-revision24.json
-  CONTAINER_NAME_1: project_task_definition
-  CONTAINER_NAME_2: dotnet_app
+  CONTAINER_NAME_1: project_task_definition_staging
+  CONTAINER_NAME_2: dotnet_app_staging
 
 jobs:
   deploy:
