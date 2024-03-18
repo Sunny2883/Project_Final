@@ -1,15 +1,15 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/backend-task-family:28",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:730335487196:task-definition/backend_task_family_prod:1",
     "containerDefinitions": [
         {
-            "name": "dotnet_app",
+            "name": "dotnet_app_prod",
             "image": "730335487196.dkr.ecr.ap-south-1.amazonaws.com/project_repo_dotnet:latest",
             "cpu": 300,
             "memory": 300,
             "portMappings": [
                 {
                     "containerPort": 8080,
-                    "hostPort": 8080,
+                    "hostPort": 0,
                     "protocol": "tcp"
                 }
             ],
@@ -20,9 +20,9 @@
             "systemControls": []
         }
     ],
-    "family": "backend-task-family",
+    "family": "backend_task_family_prod",
     "networkMode": "bridge",
-    "revision": 28,
+    "revision": 1,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -35,7 +35,7 @@
         "EXTERNAL",
         "EC2"
     ],
-    "registeredAt": "2024-03-18T07:28:09.840Z",
+    "registeredAt": "2024-03-18T13:46:58.220Z",
     "registeredBy": "arn:aws:iam::730335487196:user/Git_hub_Actions",
     "tags": []
 }

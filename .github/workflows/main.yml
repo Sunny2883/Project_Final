@@ -3,22 +3,22 @@ name: Development
 on:
   push:
     branches:
-      - "master"
+      - "prod"
   pull_request:
-    branches: ["master"]
+    branches: ["prod"]
   workflow_dispatch:
 
 env:
   AWS_REGION: ap-south-1
   ECR_REPOSITORY_1: project_repo
   ECR_REPOSITORY_2: project_repo_dotnet
-  ECS_SERVICE_1: ecs_service
-  ECS_SERVICE_2: backend_ecs_service
-  ECS_CLUSTER: project_cluster
+  ECS_SERVICE_1: ecs_service_prod
+  ECS_SERVICE_2: backend_ecs_service_prod
+  ECS_CLUSTER: project_cluster_prod
   ECS_TASK_DEFINITION_1: project-task-family-revision35.json
   ECS_TASK_DEFINITION_2: backend-task-family-revision24.json
-  CONTAINER_NAME_1: project_task_definition
-  CONTAINER_NAME_2: dotnet_app
+  CONTAINER_NAME_1: project_task_definition_prod
+  CONTAINER_NAME_2: dotnet_app_prod
 
 jobs:
   deploy:
@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: 'prod'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
