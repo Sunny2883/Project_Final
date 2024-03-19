@@ -9,7 +9,7 @@
             "portMappings": [
                 {
                     "containerPort": 4200,
-                    "hostPort": 0,
+                    "hostPort": 4200,
                     "protocol": "tcp"
                 }
             ],
