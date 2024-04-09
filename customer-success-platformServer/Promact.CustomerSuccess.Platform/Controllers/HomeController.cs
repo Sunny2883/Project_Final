@@ -9,4 +9,12 @@ public class HomeController : AbpController
     {
         return Redirect("~/swagger");
     }
+     [HttpGet]
+    [Route("healthdownload")]
+    public IActionResult GetHealthDownload()
+    {
+        return Ok("OK");
+    }
 }
+
+
